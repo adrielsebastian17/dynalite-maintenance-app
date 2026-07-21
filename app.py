@@ -9,9 +9,9 @@ from reportlab.lib import colors
 # -------------------------------------------------------------------------
 # 1. PAGE SETUP & CONFIGURATION
 # -------------------------------------------------------------------------
-st.set_page_config(page_title="Dynalite Maintenance Portal", layout="wide")
-st.title("⚡ Control Tech Asia: Dynalite Maintenance Portal")
-st.write("Predictive scheduling and automated task routing for your 7-member engineering team.")
+st.set_page_config(page_title="Engineer's Maintenance Portal", layout="wide")
+st.title("⚡ Control Tech Asia: Engineer's Maintenance Portal")
+st.write("Predictive scheduling and automated task routing for your 6-member engineering team.")
 
 # -------------------------------------------------------------------------
 # 2. APPLICATION STATE & SESSION DATA
@@ -23,7 +23,7 @@ if "machinery_df" not in st.session_state:
     data = {
         "Maintanence": ["Google", "GIC", "Micron", "One George Street", "Supreme Court"],
         "Location / Zone": ["BLK 80 Level 30", "L49-L31", "Micron 10A Fab", "L16-12", "Auditorium"],
-        "Site Temp (°C)": [24.5, 32.1, 22.0, 35.4, 26.8],  # Over 30°C requires urgent attention
+        "Site Temp (°C)": [20.5, 20.5, 25.0, 25.0, 21.8],  # Over 30°C requires urgent attention
         "Network Ping (ms)":[42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention      
         "Maint. Date": ["14/07/2026", "20/07/2026", "15/07/2026", "21/07/2026", "18/07/2026"], # DD/MM/YYYY
         "Assigned To": ["Alan,Luthfi", "Adriel", "Jaden", "Kenny", "Wei Seng"]
