@@ -40,7 +40,7 @@ selected_member = st.sidebar.selectbox("Filter Dashboard by Engineer:", ["Show A
 # -------------------------------------------------------------------------
 # 4. MAIN DASHBOARD DISPLAY
 # -------------------------------------------------------------------------
-st.header("🏢 Maintanence Schedule - Philips Dynalite & Zencontrol")
+st.header("🏢 Maintanence Schedule - Dynalite & Zencontrol")
 
 # Visual helper updated for Site Temp threshold (> 30°C)
 def highlight_anomalies(row):
