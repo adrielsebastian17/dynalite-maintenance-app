@@ -26,7 +26,7 @@ if "machinery_df" not in st.session_state:
         "Site Temp (°C)": [20.5, 20.5, 25.0, 25.0, 21.8],  # Over 30°C requires urgent attention
         "Network Ping (ms)":[42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention      
         "Maint. Date": ["14/07/2026", "20/07/2026", "15/07/2026", "21/07/2026", "18/07/2026"], # DD/MM/YYYY
-        "Assigned To": ["Alan,Luthfi", "Adriel", "Jaden", "Kenny", "Unassigned"]
+        "Assigned To": ["Alan,Luthfi", "Adriel", "Jaden", "Wei Seng", "Kenny"]
     }
     st.session_state.machinery_df = pd.DataFrame(data)
 
