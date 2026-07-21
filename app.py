@@ -85,7 +85,7 @@ if run_engine:
                 df_copy.at[index, "Assigned To"] = next_available_member
                 current_workloads[next_available_member] += 1
                 
-                logs.append(f"✅ **{row['Controller ID']}** ({row['Location / Zone']}) assigned to **{next_available_member}** due to climate/network anomalies.")
+                logs.append(f"✅ **{row['Maintanence']}** ({row['Location / Zone']}) assigned to **{next_available_member}** due to climate/network anomalies.")
                 
     st.session_state.machinery_df = df_copy
     
@@ -124,7 +124,7 @@ def build_pdf(dataframe):
     
     for _, row in dataframe.iterrows():
         row_cells = [
-            Paragraph(str(row["Controller ID"]), body_style),
+            Paragraph(str(row["Maintanence"]), body_style),
             Paragraph(str(row["Location / Zone"]), body_style),
             Paragraph(f"{row['Site Temp (°C)']} °C", body_style),
             Paragraph(f"{row['Network Ping (ms)']} ms", body_style),
