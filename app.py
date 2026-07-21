@@ -11,22 +11,22 @@ from reportlab.lib import colors
 # -------------------------------------------------------------------------
 st.set_page_config(page_title="Dynalite Maintenance Portal", layout="wide")
 st.title("⚡ Control Tech Asia: Dynalite Maintenance Portal")
-st.write("Predictive scheduling and automated task routing for your 6-member engineering team.")
+st.write("Predictive scheduling and automated task routing for your 7-member engineering team.")
 
 # -------------------------------------------------------------------------
 # 2. APPLICATION STATE & SESSION DATA
 # -------------------------------------------------------------------------
-# Define our fixed 7-member team
-TEAM_MEMBERS = ["Alan", "Jaden", "Wei Seng", "Kenny", "Luthfi", "Adriel"]
+TEAM_MEMBERS = ["Member A", "Member B", "Member C", "Member D", "Member E", "Member F", "Member G"]
 
-# Initialize a mock dataset of Philips Dynalite machinery if not already loaded
+# Initialize updated dataset with Site Temp and Maintenance Date
 if "machinery_df" not in st.session_state:
     data = {
-        "Maintanence": ["GIC", "Google", "UBS", "Dulwich", "One George Street"],
-        "Location / Zone": ["L49,47,43,42,40,34,32,31", "BLK X LY", "XXX", "XXX", "XXX"],
-        "Relay Temp (°C)": [42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention
-        "Network Ping (ms)": [15, 142, 12, 185, 25],       # Fixed values: High ping (>100) indicates network strain
-        "Assigned To": ["Adriel", "Jaden,Kenny", "Jaden", "Wei Seng", "Adriel"]
+        "Controller ID": ["DDRC1220GL-01", "DDMC802-02", "DDFC910-01", "DDRC810DT-01", "DDBC1200-01"],
+        "Location / Zone": ["Server Room", "Main Lobby", "Level 3 Office", "Basement Parking", "Auditorium"],
+        "Site Temp (°C)": [24.5, 32.1, 22.0, 35.4, 26.8],  # Over 30°C requires urgent attention
+        "Network Ping (ms)":[42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention      
+        "Maint. Date": ["14/07/2026", "20/07/2026", "15/07/2026", "21/07/2026", "18/07/2026"], # DD/MM/YYYY
+        "Assigned To": ["Member A", "Unassigned", "Member B", "Unassigned", "Unassigned"]
     }
     st.session_state.machinery_df = pd.DataFrame(data)
 
@@ -42,16 +42,15 @@ selected_member = st.sidebar.selectbox("Filter Dashboard by Engineer:", ["Show A
 # -------------------------------------------------------------------------
 st.header("🏢 Philips Dynalite Asset Status")
 
-# Visual helper to highlight critical temperature or network risks in the table
+# Visual helper updated for Site Temp threshold (> 30°C)
 def highlight_anomalies(row):
     styles = [''] * len(row)
-    if row["Relay Temp (°C)"] > 65:
+    if row["Site Temp (°C)"] > 30:
         styles = ['background-color: #ffcccc; color: #cc0000; font-weight: bold;'] * len(row)
     elif row["Network Ping (ms)"] > 100:
         styles = ['background-color: #fff3cd; color: #856404;'] * len(row)
     return styles
 
-# Filter dataframe based on sidebar selection
 if selected_member != "Show All":
     display_df = st.session_state.machinery_df[st.session_state.machinery_df["Assigned To"] == selected_member]
 else:
@@ -66,31 +65,27 @@ else:
 # 5. PREDICTIVE MAINTENANCE ENGINE (LOGIC)
 # -------------------------------------------------------------------------
 st.header("🤖 Smart Assignment Engine")
-col1, col2 = st.columns(2)  # <-- Fixed: Added the number 2 here
+col1, col2 = st.columns(2)
 
 with col1:
     run_engine = st.button("🚀 Run Assignment Model", type="primary")
-
 
 if run_engine:
     df_copy = st.session_state.machinery_df.copy()
     logs = []
     
-    # Workload counter to distribute jobs fairly among unassigned members
     current_workloads = {member: (df_copy["Assigned To"] == member).sum() for member in TEAM_MEMBERS}
     
     for index, row in df_copy.iterrows():
-        # Condition: If the machinery is unassigned AND exhibits critical conditions
         if row["Assigned To"] == "Unassigned":
-            if row["Relay Temp (°C)"] > 65 or row["Network Ping (ms)"] > 100:
-                # Find the team member who currently has the fewest tasks
+            # Rule updated: Flag if site temperature is strictly greater than 30°C
+            if row["Site Temp (°C)"] > 30 or row["Network Ping (ms)"] > 100:
                 next_available_member = min(current_workloads, key=current_workloads.get)
                 
-                # Assign the task
                 df_copy.at[index, "Assigned To"] = next_available_member
                 current_workloads[next_available_member] += 1
                 
-                logs.append(f"✅ **{row['Maintanence']}** ({row['Location / Zone']}) assigned to **{next_available_member}** due to operational anomalies.")
+                logs.append(f"✅ **{row['Controller ID']}** ({row['Location / Zone']}) assigned to **{next_available_member}** due to climate/network anomalies.")
                 
     st.session_state.machinery_df = df_copy
     
@@ -110,36 +105,36 @@ st.header("📅 Export Weekly Documentation")
 
 def build_pdf(dataframe):
     buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=36, leftMargin=36, topMargin=36, bottomMargin=36)
+    # Margins kept tight to accommodate the 6 expanded columns perfectly
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=30, leftMargin=30, topMargin=36, bottomMargin=36)
     story = []
     
-    # Typography configuration
     base_styles = getSampleStyleSheet()
-    title_style = ParagraphStyle('DocTitle', parent=base_styles['Title'], fontName='Helvetica-Bold', fontSize=24, leading=28, textColor=colors.HexColor("#1a365d"), alignment=0)
-    body_style = ParagraphStyle('DocBody', parent=base_styles['Normal'], fontName='Helvetica', fontSize=10, leading=14)
-    header_style = ParagraphStyle('TableHeader', parent=base_styles['Normal'], fontName='Helvetica-Bold', fontSize=10, leading=12, textColor=colors.whitesmoke)
+    title_style = ParagraphStyle('DocTitle', parent=base_styles['Title'], fontName='Helvetica-Bold', fontSize=22, leading=26, textColor=colors.HexColor("#1a365d"), alignment=0)
+    body_style = ParagraphStyle('DocBody', parent=base_styles['Normal'], fontName='Helvetica', fontSize=9, leading=13)
+    header_style = ParagraphStyle('TableHeader', parent=base_styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=colors.whitesmoke)
     
-    # Document Header Elements
     story.append(Paragraph("Philips Dynalite Maintenance Summary", title_style))
     story.append(Spacer(1, 6))
     story.append(Paragraph("Control Tech Asia — Automated Weekly Allocation Report", body_style))
     story.append(Spacer(1, 15))
     
-    # Format Table Data dynamically from our current UI DataFrame
+    # Generate headers dynamically from our updated 6-column structure
     table_content = [[Paragraph(col, header_style) for col in dataframe.columns]]
     
     for _, row in dataframe.iterrows():
         row_cells = [
-            Paragraph(str(row["Maintanence"]), body_style),
+            Paragraph(str(row["Controller ID"]), body_style),
             Paragraph(str(row["Location / Zone"]), body_style),
-            Paragraph(f"{row['Relay Temp (°C)']} °C", body_style),
+            Paragraph(f"{row['Site Temp (°C)']} °C", body_style),
             Paragraph(f"{row['Network Ping (ms)']} ms", body_style),
+            Paragraph(str(row["Maint. Date"]), body_style),
             Paragraph(str(row["Assigned To"]), body_style)
         ]
         table_content.append(row_cells)
     
-    # PDF Table Styling layout
-    pdf_table = Table(table_content, colWidths=[110, 110, 95, 105, 120])
+    # Layout column widths across the standard printable PDF space
+    pdf_table = Table(table_content, colWidths=[90, 100, 75, 85, 80, 90])
     pdf_table.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#1a365d")),
         ('ALIGN', (0,0), (-1,-1), 'LEFT'),
@@ -157,7 +152,6 @@ def build_pdf(dataframe):
     buffer.seek(0)
     return buffer
 
-# Generate binary stream data for download trigger
 pdf_data = build_pdf(st.session_state.machinery_df)
 
 st.download_button(
