@@ -99,9 +99,9 @@ if run_engine:
             st.info("System optimized. No critical unassigned anomalies found.")
 
 # -------------------------------------------------------------------------
-# 6. WEEKLY PDF REPORT GENERATOR
+# 6. Quarterly PDF REPORT GENERATOR
 # -------------------------------------------------------------------------
-st.header("📅 Export Weekly Documentation")
+st.header("📅 Export Quarterly Documentation")
 
 def build_pdf(dataframe):
     buffer = io.BytesIO()
@@ -116,7 +116,7 @@ def build_pdf(dataframe):
     
     story.append(Paragraph("Philips Dynalite Maintenance Summary", title_style))
     story.append(Spacer(1, 6))
-    story.append(Paragraph("Control Tech Asia — Automated Weekly Allocation Report", body_style))
+    story.append(Paragraph("Control Tech Asia — Automated Quarterly Allocation Report", body_style))
     story.append(Spacer(1, 15))
     
     # Generate headers dynamically from our updated 6-column structure
@@ -155,9 +155,9 @@ def build_pdf(dataframe):
 pdf_data = build_pdf(st.session_state.machinery_df)
 
 st.download_button(
-    label="📥 Download Weekly PDF Report",
+    label="📥 Download Quarterly PDF Report",
     data=pdf_data,
-    file_name="Weekly_Dynalite_Maintenance_Report.pdf",
+    file_name="Quarterly_Dynalite_Maintenance_Report.pdf",
     mime="application/pdf",
     type="secondary"
 )
