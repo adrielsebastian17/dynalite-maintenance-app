@@ -16,17 +16,17 @@ st.write("Predictive scheduling and automated task routing for your 7-member eng
 # -------------------------------------------------------------------------
 # 2. APPLICATION STATE & SESSION DATA
 # -------------------------------------------------------------------------
-TEAM_MEMBERS = ["Member A", "Member B", "Member C", "Member D", "Member E", "Member F", "Member G"]
+TEAM_MEMBERS = ["Alan", "Jaden", "Wei Seng", "Kenny", "Luthfi", "Adriel"]
 
 # Initialize updated dataset with Site Temp and Maintenance Date
 if "machinery_df" not in st.session_state:
     data = {
-        "Controller ID": ["DDRC1220GL-01", "DDMC802-02", "DDFC910-01", "DDRC810DT-01", "DDBC1200-01"],
-        "Location / Zone": ["Server Room", "Main Lobby", "Level 3 Office", "Basement Parking", "Auditorium"],
+        "Maintanence": ["Google", "GIC", "Micron", "One George Street", "Supreme Court"],
+        "Location / Zone": ["BLK 80 Level 30", "L49-L31", "Micron 10A Fab", "L16-12", "Auditorium"],
         "Site Temp (°C)": [24.5, 32.1, 22.0, 35.4, 26.8],  # Over 30°C requires urgent attention
         "Network Ping (ms)":[42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention      
         "Maint. Date": ["14/07/2026", "20/07/2026", "15/07/2026", "21/07/2026", "18/07/2026"], # DD/MM/YYYY
-        "Assigned To": ["Member A", "Unassigned", "Member B", "Unassigned", "Unassigned"]
+        "Assigned To": ["Alan,Luthfi", "Adriel", "Jaden", "Kenny", "Wei Seng"]
     }
     st.session_state.machinery_df = pd.DataFrame(data)
 
