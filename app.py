@@ -40,7 +40,7 @@ selected_member = st.sidebar.selectbox("Filter Dashboard by Engineer:", ["Show A
 # -------------------------------------------------------------------------
 # 4. MAIN DASHBOARD DISPLAY
 # -------------------------------------------------------------------------
-st.header("🏢 Philips Dynalite Asset Status")
+st.header("🏢 Maintanence Schedule - Philips Dynalite & Zencontrol")
 
 # Visual helper updated for Site Temp threshold (> 30°C)
 def highlight_anomalies(row):
@@ -114,7 +114,7 @@ def build_pdf(dataframe):
     body_style = ParagraphStyle('DocBody', parent=base_styles['Normal'], fontName='Helvetica', fontSize=9, leading=13)
     header_style = ParagraphStyle('TableHeader', parent=base_styles['Normal'], fontName='Helvetica-Bold', fontSize=9, leading=11, textColor=colors.whitesmoke)
     
-    story.append(Paragraph("Philips Dynalite Maintenance Summary", title_style))
+    story.append(Paragraph("CTA Engineering Maintenance Summary", title_style))
     story.append(Spacer(1, 6))
     story.append(Paragraph("Control Tech Asia — Automated Quarterly Allocation Report", body_style))
     story.append(Spacer(1, 15))
