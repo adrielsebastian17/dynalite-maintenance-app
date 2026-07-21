@@ -22,7 +22,7 @@ TEAM_MEMBERS = ["Alan", "Jaden", "Wei Seng", "Kenny", "Luthfi", "Adriel"]
 # Initialize a mock dataset of Philips Dynalite machinery if not already loaded
 if "machinery_df" not in st.session_state:
     data = {
-        "Maintanence": ["GIC", "Google", "UBS", "Dulwich", "Raffles"],
+        "Maintanence": ["GIC", "Google", "UBS", "Dulwich", "One George Street"],
         "Location / Zone": ["L49,47,43,42,40,34,32,31", "BLK X LY", "XXX", "XXX", "ditorium"],
         "Relay Temp (°C)": [42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention
         "Network Ping (ms)": [15, 142, 12, 185, 25],       # Fixed values: High ping (>100) indicates network strain
