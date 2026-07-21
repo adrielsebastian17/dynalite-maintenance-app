@@ -24,7 +24,8 @@ if "machinery_df" not in st.session_state:
     data = {
         "Maintanence": ["GIC", "Google", "UBS", "Dulwich", "One George Street"],
         "Location / Zone": ["L49,47,43,42,40,34,32,31", "BLK X LY", "XXX", "XXX", "XXX"],
-        "Relay Temp (°C)": [42.0, 68.5, 38.0, 71.2, 50.0],  # Over 65°C requires urgent attention
+        "Date(DD/MM/YYYY)": ["DD/MM/YYYY", "DD/MM/YYYY", "DD/MM/YYYY", "DD/MM/YYYY", "DD/MM/YYYY"],
+        "Site Temp (°C)": [20.0, 20.0, 20.0, 27.0, 25.0],  # Over 65°C requires urgent attention
         "Network Ping (ms)": [15, 142, 12, 185, 25],       # Fixed values: High ping (>100) indicates network strain
         "Assigned To": ["Adriel", "Jaden,Kenny", "Jaden", "Wei Seng", "Adriel"]
     }
@@ -132,6 +133,7 @@ def build_pdf(dataframe):
         row_cells = [
             Paragraph(str(row["Maintanence"]), body_style),
             Paragraph(str(row["Location / Zone"]), body_style),
+            Paragraph(str(row["Date(DD/MM/YYYY)"]), body_style),
             Paragraph(f"{row['Relay Temp (°C)']} °C", body_style),
             Paragraph(f"{row['Network Ping (ms)']} ms", body_style),
             Paragraph(str(row["Assigned To"]), body_style)
